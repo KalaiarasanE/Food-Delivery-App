@@ -10,15 +10,28 @@
 
 ## 📸 Screenshots
 
-### 🖥️ Desktop View
+## 🖥️ Desktop View
 
-<img src="<img width="1911" height="1092" alt="Screenshot 2026-07-12 221041" src="https://github.com/user-attachments/assets/950d17a6-eecc-4091-a96c-652fb53514bc" />
-" alt="Desktop Screenshot" width="100%">
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/950d17a6-eecc-4091-a96c-652fb53514bc"
+    alt="Desktop Screenshot"
+    width="100%"
+  />
+</p>
 
-### 📱 Mobile View
+---
 
-<img src="<img width="502" height="985" alt="Screenshot 2026-07-12 222010" src="https://github.com/user-attachments/assets/14712783-9681-40f3-9560-f000aed5b74b" />
-" alt="Mobile Screenshot" width="35%">
+## 📱 Mobile View
+
+<p align="center">
+  <img
+    src="https://github.com/user-attachments/assets/14712783-9681-40f3-9560-f000aed5b74b"
+    alt="Mobile Screenshot"
+    width="35%"
+  />
+</p>
+
 
 ---
 
