@@ -1,70 +1,128 @@
-# 🍔 GourmetDash — Food Delivery App (Front-End)
+# 🍔 GourmetDash - Premium Food Delivery App UI Clone
 
-> Hungry? Browse restaurants → open a menu → add to cart → login with Google → order placed. 🛵
+> A fully responsive premium food delivery frontend clone featuring restaurant discovery, dynamic menus, shopping cart management, Google authentication, and interactive order tracking.
 
-🔗 **Live Demo:** [GourmetDash Live Demo](https://kalaiarasane.github.io/Food-Delivery-App/) · **Code:** [GitHub Repository](https://github.com/KalaiarasanE/Food-Delivery-App)
+## 🌐 Live Demo
 
-## 🗺 The user journey
-🏠 **Landing page** → 🍽 **Restaurant listing** (Veg/Non-veg filter) → 📋 **Menu page** → 🛒 **Cart** (items + delivery fee + grand total) → 🔐 **Google login (Clerk)** → ✅ **Order confirmed!**
+**GitHub Pages:** https://kalaiarasane.github.io/Food-Delivery-App/
+
+---
 
 ## 📸 Screenshots
-![GourmetDash Landing Page](assets/images/screenshot_landing.png)
-![GourmetDash Cart and Checkout](assets/images/screenshot_checkout.png)
-*(Note: Please capture screenshots of your running app and save them in `assets/images/screenshot_landing.png` and `assets/images/screenshot_checkout.png` to display them here.)*
 
-## ✨ Highlights
-- Add to cart **works from every restaurant's menu**
-- Cart page shows quantities, delivery fee & grand total
-- **Login with Google (Clerk) is compulsory before placing an order**
-- Restaurant filters: cuisine, rating, Veg / Non-veg
-- 100% responsive — designed mobile-first like a real food app
+### 🖥️ Desktop View
 
-## 🛠 Tech Stack
-HTML5 · CSS3 · Clerk (Google auth) · AI-assisted features (Gemini 3.5 Flash via Antigravity) · GitHub Pages
+<img src="YOUR_DESKTOP_SCREENSHOT_URL" alt="Desktop Screenshot" width="100%">
 
-## 🤖 How I used AI
-- **What I asked AI to build:**
-  - Integrated Clerk authentication for secure Google Login before placing an order.
-  - Added navigation guard to block unauthorized checkout attempts.
-  - Implemented dynamic user profile display showing name, email, and Google profile picture or custom initials.
-  - Added Sign In and Sign Out buttons in the header and profile panels.
-  - Resolved routing bugs where the 'My Orders' tab failed to show the tracking screen.
-  
-- **What I built myself:**
-  - The core GourmetDash single-page application structure.
-  - Responsive layouts, sidebars, and slide-in shopping cart drawers.
-  - Interactive cart math engine supporting item quantities, tax, location-based delivery fees, and promo coupons.
-  - Simulated live delivery timeline tracker and driver auto-reply chat engine.
+### 📱 Mobile View
 
-## 📚 What I learned
-- How to configure and integrate the **Clerk JS SDK** in a pure front-end environment using CDN script hotloading.
-- Designing a dual-mode authentication handler that falls back to a simulated Google authentication flow to maintain offline usability and local testing.
-- Standardizing single-page application view routing and resolving panel visibility bugs.
-- Writing clean, responsive, mobile-first layouts using CSS variables and flexbox without any framework overhead.
+<img src="YOUR_MOBILE_SCREENSHOT_URL" alt="Mobile Screenshot" width="35%">
 
 ---
 
-## 🎓 About TAP Academy
+## ✨ Features
 
-This project was built during my frontend training at **[TAP Academy](https://thetapacademy.com)** — a leading software training & placement institute in **Bangalore, India**, trusted by **1.5+ lakh students**.
-
-**Why students choose TAP Academy:**
-- 🚀 **Get placed in 60 days** — dedicated placement track with daily placement drives
-- 🥽 **Augmented Reality (AR) classrooms** — concepts you can see, not just read
-- 🎤 **Weekly mock interviews** with real-time feedback
-- 👨🏫 **1-on-1 mentorship** and round-the-clock doubt support
-- 💻 Courses in **Java, Python, Full Stack Development, Data Science & AI**
-
-### ❓ FAQ
-
-**What is TAP Academy?**
-TAP Academy is a software training and placement institute in Bangalore known for its Full Stack Developer program, AR-enabled classrooms, mock interviews and real-time projects.
-
-**Does TAP Academy provide placement support?**
-Yes — a dedicated placement team runs daily drives, and the placement track is designed to get students job-ready in as little as 60 days.
-
-**Where can I learn more?**
-🔗 [Website](https://thetapacademy.com) · [Placements](https://thetapacademy.com/placements) · [LinkedIn](https://in.linkedin.com/company/thetapacademy) · [YouTube](https://www.youtube.com/tapacademy)
+- Responsive UI
+- Interactive restaurant listings with cuisine, Veg/Non-Veg, rating and category filters
+- Dynamic shopping cart with quantity controls, delivery fee calculation and order summary
+- Google Authentication using Clerk before checkout
+- Order history dashboard with live delivery tracking simulation
+- Customer profile management with Google account integration
+- Search functionality with restaurant recommendations
+- Cross-browser compatibility
+- Clean and modern design
 
 ---
-*⭐ If you liked this project, star the repo — it helps more students discover it.*
+
+## 🛠️ Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript (ES6)
+- Clerk Authentication
+- Responsive Design
+- Git & GitHub
+- AI-assisted development
+
+---
+
+## 🎨 Design References
+
+- Refero – https://refero.design/
+- Godly – https://godly.website/
+- Aceternity UI – https://ui.aceternity.com/
+
+---
+
+## 🤖 AI Tools Used
+
+This project was developed with AI assistance for:
+
+- UI layout ideas
+- Authentication integration
+- Responsive component generation
+- JavaScript functionality
+- Code optimization
+- Bug fixing
+- Documentation improvements
+
+---
+
+## 📚 What I Learned
+
+- Integrating Clerk Authentication for secure Google Sign-In in a frontend application.
+- Developing reusable JavaScript modules for shopping cart management and dynamic UI rendering.
+- Building responsive food delivery interfaces with smooth navigation and interactive user experiences.
+
+---
+
+# 🚀 About TAP Academy
+
+TAP Academy is an industry-focused training institute that helps students become job-ready software engineers through hands-on learning, real-world projects, mock interviews, and placement preparation.
+
+### Why TAP Academy?
+
+- Placement-focused training
+- Real-world project development
+- AR-enabled classrooms
+- Daily coding practice
+- Mock interviews
+- Industry mentors
+- Resume building
+- Git & GitHub workflow
+- Frontend and Full Stack Development
+- Career guidance
+- Placement support within 60 days for eligible students
+
+Learn more:
+https://thetapacademy.com/
+
+---
+
+## 📥 Installation
+
+```bash
+git clone https://github.com/KalaiarasanE/Food-Delivery-App.git
+
+cd Food-Delivery-App
+
+open index.html
+```
+
+---
+
+## 👨‍💻 Author
+
+**Kalaiarasan E**
+
+GitHub: https://github.com/KalaiarasanE
+
+LinkedIn: https://www.linkedin.com/in/kalaiarasane
+
+Portfolio: https://kalaiarasane.github.io/portfolio
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub.
