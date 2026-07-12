@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GourmetDash | Premium Food Delivery</title>
+  <!-- Google Fonts - Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <!-- Clerk Authentication SDK (Async CDN Load) -->
+  <script async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
+</head>
+<body>
+  <!-- Global Toast Alert Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Header Navbar -->
+  <header class="main-header">
+    <div class="nav-container">
+      <div class="nav-left">
+        <div class="nav-logo" id="logo-btn">
+          <svg viewBox="0 0 24 24" width="28" height="28" class="logo-icon"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+          <span>GourmetDash</span>
+        </div>
+        <div class="location-picker" id="open-address-modal-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" class="text-primary"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+          <div class="location-details">
+            <span class="delivery-to">Deliver to:</span>
+            <span class="active-address-text" id="header-address-label">124 Pine St, San Francisco</span>
+          </div>
+          <svg viewBox="0 0 24 24" width="14" height="14" class="arrow-icon"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        </div>
+      </div>
+
+      <div class="nav-center-search">
+        <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="global-food-search" placeholder="Search for dishes, restaurants, or cuisines...">
+      </div>
+
+      <div class="nav-right">
+        <button class="nav-tab active" data-view="restaurants">
+          <span>Home</span>
+        </button>
+        <button class="nav-tab" data-view="orders">
+          <span>My Orders</span>
+          <span class="badge badge-pulse" id="tracking-active-badge" style="display:none;">1</span>
+        </button>
+        <button class="nav-tab" data-view="profile">
+          <span>Profile</span>
+        </button>
+
+        <button class="theme-toggler-btn" id="theme-toggle-btn" aria-label="Toggle Dark Mode">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm-9 5c0-.55-.45-1-1-1H1c-.55 0-1 .45-1 1s.45 1 1 1h1c.55 0 1-.45 1-1zm2.34-6.4a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.34 5.6zm13.32 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06a.996.996 0 000-1.41.996.996 0 00-1.41 0zM12 2c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1s1 .45 1 1v1c0 .55-.45 1-1 1zm0 20c-.55 0-1-.45-1-1v-1c0-.55.45-1 1-1s1 .45 1 1v1c0 .55-.45 1-1 1zm8 0c-.55 0-1-.45-1-1v-1c0-.55.45-1 1-1s1 .45 1 1v1c0 .55-.45 1-1 1zm-13.66-2.34a.996.996 0 000-1.41l-1.06-1.06c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0zm11.3 0c.39.39 1.03.39 1.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41z"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" style="display:none;"><path fill="currentColor" d="M12.3 22h-.1c-5.5 0-10-4.5-10-10 0-4.7 3.2-8.7 7.7-9.8.6-.2 1.2.2 1.3.8.1.6-.2 1.2-.8 1.3-3.2.8-5.5 3.7-5.5 7.1 0 4.1 3.4 7.5 7.5 7.5 3.4 0 6.3-2.3 7.1-5.5.2-.6.7-.9 1.3-.8.6.1 1 .7.8 1.3-1.1 4.5-5.1 7.7-9.8 7.7z"/></svg>
+        </button>
+
+        <button class="cart-toggle-badge-btn" id="cart-drawer-toggle-btn">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.9 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+          <span>Cart</span>
+          <span class="cart-badge-count" id="header-cart-qty">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Bottom Navigation Tab bar -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-tab active" data-view="restaurants">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>Explore</span>
+    </button>
+    <button class="mobile-nav-tab" data-view="orders">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm5 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      <span>Orders</span>
+    </button>
+    <button class="mobile-nav-tab" id="mobile-cart-btn">
+      <div style="position:relative;">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49H5.21l-.94-2H1z"/></svg>
+        <span class="cart-badge-count" id="mobile-cart-qty">0</span>
+      </div>
+      <span>Cart</span>
+    </button>
+    <button class="mobile-nav-tab" data-view="profile">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <!-- Main View Frame -->
+  <main class="main-frame container">
+
+    <!-- VIEW 1: RESTAURANT DISCOVERY PORTAL -->
+    <section id="restaurants-view" class="view-panel active-view">
+      <!-- Promo Banner Slider -->
+      <div class="promo-carousel-container">
+        <div class="promo-slide" style="background-image: linear-gradient(to right, rgba(15,23,42,0.85), rgba(15,23,42,0.2)), url('assets/images/promo_banner.jpg');">
+          <div class="promo-content">
+            <span class="promo-tag">LIMITED TIME</span>
+            <h2>Gourmet Feast at 50% Off</h2>
+            <p>Order from top-tier culinary kitchens and get free delivery on orders above ₹500. Use code <strong class="text-primary">GIFT50</strong></p>
+            <button class="btn btn-primary" onclick="claimPromoCode('GIFT50')">Claim Offer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuisine Category Selector -->
+      <div class="categories-scroll-wrapper">
+        <div class="categories-container" id="category-pills-list">
+          <button class="category-pill active" data-category="all">
+            <span class="cat-emoji">🍔</span>
+            <span>All Foods</span>
+          </button>
+          <button class="category-pill" data-category="pizza">
+            <span class="cat-emoji">🍕</span>
+            <span>Pizza</span>
+          </button>
+          <button class="category-pill" data-category="burger">
+            <span class="cat-emoji">🍔</span>
+            <span>Burgers</span>
+          </button>
+          <button class="category-pill" data-category="sushi">
+            <span class="cat-emoji">🍣</span>
+            <span>Sushi</span>
+          </button>
+          <button class="category-pill" data-category="desserts">
+            <span class="cat-emoji">🍰</span>
+            <span>Desserts</span>
+          </button>
+          <button class="category-pill" data-category="healthy">
+            <span class="cat-emoji">🥗</span>
+            <span>Salads</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters & Sorting Options -->
+      <div class="filters-sort-bar">
+        <h3>Local kitchens near you</h3>
+        <div class="sort-controls">
+          <button class="sort-btn active" data-sort="rating">Top Rated ⭐</button>
+          <button class="sort-btn" data-sort="time">Fastest Delivery ⚡</button>
+          <button class="sort-btn" data-sort="fee">Free Delivery 🚴</button>
+        </div>
+      </div>
+
+      <!-- Restaurants Grid -->
+      <div class="restaurants-grid" id="restaurants-container">
+        <!-- Renders dynamically by script.js -->
+      </div>
+    </section>
+
+    <!-- VIEW 2: RESTAURANT DETAIL & MENU VIEW -->
+    <section id="menu-view" class="view-panel">
+      <!-- Back button -->
+      <button class="back-link-btn" onclick="switchView('restaurants')">
+        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+        Back to restaurants
+      </button>
+
+      <!-- Restaurant Hero Info -->
+      <div id="restaurant-hero-details">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+
+      <!-- Menu Split Layout -->
+      <div class="menu-layout">
+        <!-- Menu Categories Nav links left -->
+        <aside class="menu-sidebar-nav" id="menu-categories-sidebar">
+          <!-- Rendered dynamically -->
+        </aside>
+
+        <!-- Dishes List right -->
+        <div class="menu-dishes-list" id="dishes-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: CHECKOUT SCREEN -->
+    <section id="checkout-view" class="view-panel">
+      <h2>Complete your order</h2>
+      <div class="checkout-split-layout">
+        <!-- Left: Forms -->
+        <div class="checkout-forms-col">
+          <!-- Shipping Address -->
+          <div class="card checkout-card">
+            <div class="card-title-row">
+              <span class="step-num">1</span>
+              <h3>Delivery Address</h3>
+              <button class="btn-link" id="change-address-checkout-btn">Change</button>
+            </div>
+            <div class="card-body-padded">
+              <p class="bold" id="checkout-address-name">Home Delivery</p>
+              <p class="text-muted" id="checkout-address-detail" style="margin-top:2px;">124 Pine St, San Francisco, CA 94111</p>
+              <p class="text-light" style="margin-top:4px; font-size:12px;">Instruction: Leave on doorstep, ring bell.</p>
+            </div>
+          </div>
+
+          <!-- Payment Options -->
+          <div class="card checkout-card">
+            <div class="card-title-row">
+              <span class="step-num">2</span>
+              <h3>Payment Method</h3>
+            </div>
+            <div class="payment-options-grid">
+              <div class="payment-method-card active" data-method="card">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+                <span>Credit Card</span>
+              </div>
+              <div class="payment-method-card" data-method="paypal">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                <span>PayPal</span>
+              </div>
+              <div class="payment-method-card" data-method="cod">
+                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                <span>Cash on Delivery</span>
+              </div>
+            </div>
+
+            <!-- Card Payment Input Fields -->
+            <form id="card-payment-form" class="card-details-inputs">
+              <div class="form-group">
+                <label for="checkout-card-num">Card Number</label>
+                <input type="text" id="checkout-card-num" placeholder="4111 2222 3333 4444" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="checkout-card-exp">Expiration Date</label>
+                  <input type="text" id="checkout-card-exp" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                  <label for="checkout-card-cvv">CVV</label>
+                  <input type="password" id="checkout-card-cvv" placeholder="•••" maxlength="3" required>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right: Summary & Checkout button -->
+        <div class="checkout-summary-col">
+          <div class="card checkout-summary-card">
+            <h3>Basket Summary</h3>
+            <div id="checkout-basket-items-list" class="checkout-basket-items">
+              <!-- Rendered dynamically -->
+            </div>
+            
+            <hr class="divider" style="margin:16px 0;">
+
+            <div class="totals-breakdown">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span id="checkout-subtotal">₹0</span>
+              </div>
+              <div class="total-row">
+                <span>Delivery Fee</span>
+                <span id="checkout-delivery">₹0</span>
+              </div>
+              <div class="total-row">
+                <span>Service Fee & Tax</span>
+                <span id="checkout-tax">₹0</span>
+              </div>
+              <div class="total-row text-success bold" id="checkout-discount-row" style="display:none;">
+                <span>Discount applied</span>
+                <span id="checkout-discount">-₹0</span>
+              </div>
+              <hr class="divider" style="margin:8px 0;">
+              <div class="total-row grand-total bold">
+                <span>Total Amount</span>
+                <span id="checkout-grand-total">₹0</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-full" id="place-order-submit-btn" style="margin-top:20px; height:50px; font-size:16px;">Place Order & Pay</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: LIVE ORDER TRACKING PAGE / ORDERS VIEW -->
+    <section id="orders-view" class="view-panel">
+      <div class="tracking-split-layout">
+        <!-- Left: Status timelines -->
+        <div class="tracking-status-col">
+          <div class="card tracking-card-header">
+            <span class="live-tag">🔴 LIVE TRACKING</span>
+            <h2>Arriving in <span class="text-primary" id="tracking-eta">15 mins</span></h2>
+            <p class="text-muted" style="font-size:12px; margin-top:2px;">Order ID: <strong id="tracking-order-id">#GD-19842</strong> • From <span id="tracking-restaurant-name">Gourmet Pizza Kitchen</span></p>
+          </div>
+
+          <div class="card tracking-timeline-card">
+            <div class="timeline-step" id="step-placed">
+              <div class="step-indicator">✓</div>
+              <div class="step-details">
+                <h4>Order Placed</h4>
+                <p>We've received your order and payment.</p>
+                <span class="step-time">10:41 AM</span>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-preparing">
+              <div class="step-indicator">✓</div>
+              <div class="step-details">
+                <h4>Preparing Food</h4>
+                <p>The chef is baking your pizza and packing dishes.</p>
+                <span class="step-time">10:43 AM</span>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-delivering">
+              <div class="step-indicator">✓</div>
+              <div class="step-details">
+                <h4>Out for Delivery</h4>
+                <p>Rider <strong id="driver-name-timeline">Johnny</strong> is carrying your package on his electric bike.</p>
+                <span class="step-time">10:48 AM</span>
+              </div>
+            </div>
+            <div class="timeline-step" id="step-arrived">
+              <div class="step-indicator">✓</div>
+              <div class="step-details">
+                <h4>Food Delivered</h4>
+                <p>Arrived! Bon appétit!</p>
+                <span class="step-time">11:00 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Driver details -->
+          <div class="card driver-details-card">
+            <img src="assets/images/avatar_driver.jpg" alt="Driver Avatar" class="driver-avatar-img">
+            <div class="driver-text-info">
+              <h4>Johnny S.</h4>
+              <p class="text-muted" style="font-size:11px;">Riding an Electric Bicycle • ⭐ 4.9 Rating</p>
+              <p class="bold" style="font-size:12px; color:var(--primary); margin-top:4px;">"On my way to deliver your hot meal!"</p>
+            </div>
+            <a href="tel:123456" class="driver-call-btn" aria-label="Call driver">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.57a.98.98 0 00-1.01.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21a.96.96 0 00.25-1A11.36 11.36 0 018.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Rider chat portal -->
+        <div class="tracking-chat-col">
+          <div class="card chat-card-wrapper">
+            <div class="chat-header">
+              <h3>Chat with Johnny</h3>
+              <span class="status-indicator online">Online</span>
+            </div>
+            <div class="chat-bubbles-display" id="driver-chat-container">
+              <!-- Simulated chats injected by JS -->
+            </div>
+            <div class="chat-input-bar">
+              <input type="text" id="driver-chat-input" placeholder="Text instructions to Johnny...">
+              <button class="chat-send-btn" id="send-driver-msg-btn" aria-label="Send message">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#ffffff" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: USER PROFILE & HISTORY -->
+    <section id="profile-view" class="view-panel">
+      <div class="profile-layout">
+        <!-- Left: Profile details card -->
+        <div class="card profile-info-card">
+          <!-- Logged In State -->
+          <div id="profile-logged-in-state">
+            <div class="profile-header-meta">
+              <div class="profile-avatar-circle" id="profile-user-avatar">AM</div>
+              <h3 id="profile-user-name">Alex Morgan</h3>
+              <p class="text-muted" id="profile-user-email">alex.morgan@gourmetdash.com</p>
+            </div>
+            <button class="btn btn-outline btn-full" id="profile-signout-btn" style="margin-top: 16px;">Sign Out</button>
+          </div>
+
+          <!-- Logged Out State -->
+          <div id="profile-logged-out-state" style="display: none; text-align: center; padding: 20px 0;">
+            <div class="profile-avatar-circle" style="margin: 0 auto 16px; background-color: var(--bg-input); color: var(--text-muted); font-size: 20px; display: flex; align-items: center; justify-content: center;">?</div>
+            <h3>Not Signed In</h3>
+            <p class="text-muted" style="font-size: 13px; margin: 8px 0 20px;">Please sign in with Google to access your profile settings and addresses.</p>
+            <button class="btn btn-primary btn-full" id="profile-signin-btn">Sign In with Google</button>
+          </div>
+
+          <hr class="divider" style="margin:16px 0;">
+          <div class="profile-addresses">
+            <h4>Saved Addresses</h4>
+            <div class="saved-address-row">
+              <div class="address-bullet">🏠</div>
+              <div>
+                <p class="bold">Home Address</p>
+                <p class="text-muted" style="font-size:12px;">124 Pine St, San Francisco, CA 94111</p>
+              </div>
+            </div>
+            <div class="saved-address-row">
+              <div class="address-bullet">💼</div>
+              <div>
+                <p class="bold">Work Address</p>
+                <p class="text-muted" style="font-size:12px;">1 Market St, San Francisco, CA 94105</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Past orders list -->
+        <div class="profile-orders-col">
+          <div class="card orders-history-card">
+            <h3>Past Orders History</h3>
+            <div class="orders-history-list" id="past-orders-container">
+              <!-- Rendered dynamically by script.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= OVERLAYS & MODALS ================= -->
+
+  <!-- Cart Drawer Overlay (Slides from right) -->
+  <div class="cart-overlay-backdrop" id="cart-drawer-overlay">
+    <div class="cart-drawer">
+      <div class="cart-drawer-header">
+        <h3>Shopping Cart</h3>
+        <button class="close-drawer-btn" id="close-cart-drawer-btn">&times;</button>
+      </div>
+
+      <!-- Items scroll list -->
+      <div class="cart-drawer-items" id="cart-items-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Footer Pricing summary -->
+      <div class="cart-drawer-footer">
+        <div class="promo-code-input-row">
+          <input type="text" id="promo-code-input" placeholder="Add coupon code (e.g. BITE20)">
+          <button class="btn btn-outline" id="apply-promo-btn">Apply</button>
+        </div>
+        <div id="active-promo-badge" class="promo-badge" style="display:none;"></div>
+        
+        <hr class="divider" style="margin:12px 0;">
+
+        <div class="pricing-breakdown">
+          <div class="price-row">
+            <span>Subtotal</span>
+            <span id="cart-subtotal">₹0</span>
+          </div>
+          <div class="price-row">
+            <span>Delivery Fee</span>
+            <span id="cart-delivery">₹39</span>
+          </div>
+          <div class="price-row text-success" id="cart-discount-row" style="display:none;">
+            <span>Discount Applied</span>
+            <span id="cart-discount">-₹0</span>
+          </div>
+          <hr class="divider" style="margin:8px 0;">
+          <div class="price-row grand-total bold">
+            <span>Total</span>
+            <span id="cart-grand-total">₹0</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full checkout-action-btn" id="checkout-redirect-btn" style="margin-top:16px; height:46px;">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address Selector modal -->
+  <div class="modal-overlay" id="address-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Change Delivery Location</h3>
+        <button class="modal-close-btn" id="close-address-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="address-options-list">
+          <div class="address-option-item active" data-addr="124 Pine St, San Francisco">
+            <span class="icon">🏠</span>
+            <div class="details">
+              <h4>Home Address</h4>
+              <p>124 Pine St, San Francisco, CA 94111</p>
+            </div>
+          </div>
+          <div class="address-option-item" data-addr="1 Market St, San Francisco">
+            <span class="icon">💼</span>
+            <div class="details">
+              <h4>Work Place</h4>
+              <p>1 Market St, San Francisco, CA 94105</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Modal (Clerk / Google Login) -->
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal-container auth-modal-container">
+      <div class="modal-header">
+        <h3>Sign In</h3>
+        <button class="modal-close-btn" id="close-auth-modal">&times;</button>
+      </div>
+      <div class="modal-body auth-modal-body">
+        <!-- If real Clerk is active, Clerk Sign-In will mount here -->
+        <div id="clerk-signin-container" style="display: none; width: 100%;"></div>
+        
+        <!-- Mock Clerk login card (shown if Clerk is not configured) -->
+        <div id="mock-auth-container" class="mock-auth-card">
+          <div class="mock-auth-logo">
+            <svg viewBox="0 0 24 24" width="48" height="48" class="logo-icon text-primary" style="margin: 0 auto 12px; display: block;"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+            <h3>GourmetDash</h3>
+            <p class="text-muted">Sign in with Google to place your order</p>
+          </div>
+          <button class="btn btn-outline btn-google-login" id="mock-google-login-btn">
+            <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="#EA4335" d="M12.24 10.285V14.4h6.887c-.648 2.41-2.519 4.114-5.136 4.114A5.53 5.53 0 0 1 8.4 13c0-3.037 2.47-5.514 5.59-5.514 1.358 0 2.612.479 3.597 1.28l3.223-3.223C18.847 3.738 15.688 2.5 14 2.5 8.2 2.5 3.5 7.2 3.5 13s4.7 10.5 10.5 10.5c5.8 0 10.5-4.7 10.5-10.5 0-.712-.082-1.405-.224-2.07l-2.036-.645z"/></svg>
+            <span>Continue with Google</span>
+          </button>
+          <div class="clerk-badge-footer">
+            <span>Secured by </span><strong class="clerk-brand">Clerk</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Import -->
+  <script src="script.js"></script>
+</body>
+</html>
