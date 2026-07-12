@@ -2,7 +2,7 @@
 
 > Hungry? Browse restaurants → open a menu → add to cart → login with Google → order placed. 🛵
 
-🔗 **Live Demo:** [GourmetDash Live Demo](https://{{GITHUB_USERNAME}}.github.io/{{REPO_NAME}}/) · **Code:** [GitHub Repository](https://github.com/{{GITHUB_USERNAME}}/{{REPO_NAME}})
+🔗 **Live Demo:** [GourmetDash Live Demo](https://kalaiarasane.github.io/Food-Delivery-App/) · **Code:** [GitHub Repository](https://github.com/KalaiarasanE/Food-Delivery-App)
 
 ## 🗺 The user journey
 🏠 **Landing page** → 🍽 **Restaurant listing** (Veg/Non-veg filter) → 📋 **Menu page** → 🛒 **Cart** (items + delivery fee + grand total) → 🔐 **Google login (Clerk)** → ✅ **Order confirmed!**
