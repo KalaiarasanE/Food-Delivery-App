@@ -4,7 +4,7 @@
 
 ## 🌐 Live Demo
 
-**GitHub Pages:** https://kalaiarasane.github.io/Food-Delivery-App/
+**GitHub Pages:** [https://kalaiarasane.github.io/Food-Delivery-App/](https://food-delivery-app-one-lemon.vercel.app/)
 
 ---
 
